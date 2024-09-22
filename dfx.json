@@ -1,0 +1,44 @@
+{
+  "canisters": {
+    "backend": {
+      "main": "src/backend/main/main.mo",
+      "type": "motoko",
+      "dependencies": ["fileUpload"]
+    },
+    "fileUpload": {
+      "main": "src/backend/uploadFile/Assets.mo",
+      "type": "motoko"
+    },
+    "httpOutcalls": {
+      "main": "src/backend/httpOutcalls/main.mo",
+      "type": "motoko"
+    },
+    "frontend": {
+      "dependencies": ["backend"],
+      "frontend": {
+        "entrypoint": "build/index.html"
+      },
+      "source": ["build/"],
+      "type": "assets"
+    },
+    "NFT_canister": {
+      "main": "src/backend/NFTCanister/main.mo",
+      "type": "motoko",
+      "dependencies": ["backend"]
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": "mops sources"
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "localhost:8000",
+      "type": "ephemeral"
+    }
+  },
+  "output_env_file": ".env",
+  "version": 1
+}

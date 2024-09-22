@@ -1,0 +1,230 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 20 14.3% 4.1%;
+
+    --muted: 60 4.8% 95.9%;
+    --muted-foreground: 25 5.3% 44.7%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 14.3% 4.1%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 20 14.3% 4.1%;
+
+    --border: 20 5.9% 90%;
+    --input: 20 5.9% 90%;
+
+    --primary: 24 9.8% 10%;
+    --primary-foreground: 60 9.1% 97.8%;
+
+    --secondary: 60 4.8% 95.9%;
+    --secondary-foreground: 24 9.8% 10%;
+
+    --accent: 60 4.8% 95.9%;
+    --accent-foreground: 24 9.8% 10%;
+
+    --destructive: 0 72.2% 50.6%;
+    --destructive-foreground: 60 9.1% 97.8%;
+
+    --ring: 20 14.3% 4.1%;
+
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  :root {
+    font-family: "Geist", sans-serif;
+  }
+
+  /* static fonts */
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 100;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-Thin.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 200;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-UltraLight.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 300;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-Light.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 400;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-Regular.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 500;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-Medium.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 600;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-SemiBold.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 700;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-Bold.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 800;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-Black.woff2") format("woff2");
+  }
+  @font-face {
+    font-family: "Geist";
+    font-style: normal;
+    font-weight: 900;
+    font-display: swap;
+    src: url("$lib/fonts/Geist-UltraBlack.woff2") format("woff2");
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  *::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Hide scrollbar for IE, Edge and Firefox */
+  * {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  ::selection {
+    background: black;
+    color: white;
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes fade-out {
+  to {
+    opacity: 0;
+  }
+}
+
+@keyframes slide-from-right {
+  from {
+    transform: translateX(30px);
+  }
+}
+
+@keyframes slide-to-left {
+  to {
+    transform: translateX(-30px);
+  }
+}
+
+:root::view-transition-old(root) {
+  animation:
+    90ms cubic-bezier(0.4, 0, 1, 1) both fade-out,
+    300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-to-left;
+}
+
+:root::view-transition-new(root) {
+  animation:
+    210ms cubic-bezier(0, 0, 0.2, 1) 90ms both fade-in,
+    300ms cubic-bezier(0.4, 0, 0.2, 1) both slide-from-right;
+}
+
+@keyframes slideIn {
+  from {
+    max-height: 100vh;
+  }
+  to {
+    max-height: 90vh;
+  }
+}
+
+@keyframes slideOut {
+  from {
+    max-height: 90vh;
+  }
+  to {
+    max-height: 100vh;
+  }
+}
+
+body {
+  transition: transform 0.4s ease;
+}
+
+body.nav-open {
+  transform: translateX(-80%) scale(0.9) translateY(5%);
+  animation: slideIn 0.4s ease forwards;
+}
+
+body:not(.nav-open) {
+  animation: slideOut 0.4s ease forwards;
+}
+
+body.nav-open .nonNav:not(.thisIsNav) {
+  overflow: hidden;
+  max-height: 80vh;
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+#searchingBox {
+  background-image: url("$lib/images/BG-Desktop2.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+.animate-pulse-custom {
+  animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}

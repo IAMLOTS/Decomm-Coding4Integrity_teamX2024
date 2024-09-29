@@ -20,6 +20,7 @@ import User "../main/User";
 import ICRC3Default "./icrc3";
 import ICRC37Default "./icrc37";
 import ICRC7Default "./icrc7";
+import Iter "mo:base/Iter";
 
 shared (_init_msg) actor class NFTCanister(
     _args : {
@@ -96,6 +97,91 @@ shared (_init_msg) actor class NFTCanister(
             };
         };
     };
+    
+type Account = {
+    id: Text;
+    balance: Nat;
+};
+
+type NFT = {
+    token_id: Nat;
+    owner: Account;
+    metadata: Text;
+};
+
+// Define the arrays with immutable elements
+var nfts: [NFT] = [];      // Empty immutable array
+var accounts: [Account] = []; // Empty immutable array
+
+public shared func buyNFT(token_id: Nat, buyer_id: Text, price: Nat): async Bool {
+    // Find the NFT
+    let nftOpt = Array.find<NFT>(nfts, func (nft) : Bool {
+        nft.token_id == token_id
+    });
+
+    switch (nftOpt) {
+        case (?nft) {
+            // Find the buyer's account
+            let buyerOpt = Array.find<Account>(accounts, func (acc) : Bool {
+                acc.id == buyer_id
+            });
+
+            switch (buyerOpt) {
+                case (?buyerAcc) {
+                    // Check if buyer has enough balance
+                    if (buyerAcc.balance >= price) {
+                        // Update NFT owner
+                        let updatedNfts = Array.map<NFT, NFT>(nfts, func (nft) : NFT {
+                            if (nft.token_id == token_id) {
+                                { nft with owner = buyerAcc } // Updated NFT owner
+                            } else {
+                                nft // Original NFT unchanged
+                            }
+                        });
+                        nfts := updatedNfts;
+
+                        // Update buyer's balance
+                        let updatedAccounts1 = Array.map<Account, Account>(accounts, func (acc) : Account {
+                            if (acc.id == buyer_id) {
+                                { acc with balance = acc.balance - price } // Updated balance
+                            } else {
+                                acc // Original account unchanged
+                            }
+                        });
+
+                        // Update seller's balance
+                        let updatedAccounts2 = Array.map<Account, Account>(updatedAccounts1, func (acc) : Account {
+                            if (acc.id == nft.owner.id) {
+                                { acc with balance = acc.balance + price } // Updated balance
+                            } else {
+                                acc // Original account unchanged
+                            }
+                        });
+                        accounts := updatedAccounts2;
+
+                        true // Purchase successful
+                    } else {
+                        false // Insufficient balance
+                    }
+                };
+                case null {
+                    false // Buyer not found
+                };
+            }
+        };
+        case null {
+            false // NFT not found
+        };
+    }
+};
+
+
+    public shared (msg) func sell_nft(token_id: Nat, seller: Principal, price: Nat) : async Bool {
+        // Logic for selling the NFT
+        D.print("NFT sold by: " # Principal.toText(seller) # " for price: " # Nat.toText(price));
+        return true;
+    };
+
 
     private func updated_certification(_cert : Blob, _lastIndex : Nat) : Bool {
         D.print("updating the certification " # debug_show (CertifiedData.getCertificate(), ct.treeHash()));

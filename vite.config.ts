@@ -4,6 +4,8 @@ import { join } from "path";
 import type { UserConfig } from "vite";
 import { defineConfig, loadEnv } from "vite";
 import path from "path";
+import nodePolyfills from 'vite-plugin-node-polyfills';
+
 
 const network = process.env.DFX_NETWORK ?? "local";
 let host: string;
@@ -106,6 +108,9 @@ export default defineConfig(({ mode }: UserConfig): UserConfig => {
 
   return {
     ...config,
+    plugins: [
+      nodePolyfills()
+    ],
     // Backwards compatibility for auto generated types of dfx that are meant for webpack and process.env
     define: {
       "process.env": {
@@ -115,5 +120,7 @@ export default defineConfig(({ mode }: UserConfig): UserConfig => {
       global: "globalThis",
       "global.Buffer": "globalThis.Buffer",
     },
-  };
+  };  
 });
+
+  

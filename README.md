@@ -95,7 +95,7 @@ curl -fsSL cli.mops.one/install.sh | sh
 install the relevant packages needed to run both the backend and frontend for the first time by running:
 
 ```bash
-cd /Coding4Integrity-DeComm-Hackathon
+cd ~/Decomm-Coding4Integrity_teamX2024
 npm install
 ```
 
@@ -116,7 +116,6 @@ export NODE_OPTIONS="--max-old-space-size=4096"
 
 
 ```bash
-cd /Pretoria-South-Africa
 npm run startdfx
 npm run deploy
 npm run generate
@@ -135,7 +134,7 @@ If you want to test your project locally with Hot Module Replacement (HMR), you 
 npm run dev
 
 # If you are starting the project again and want HMR
-cd /Coding4Integrity-DeComm-Hackathon
+cd ~/Decomm-Coding4Integrity_teamX2024
 npm run startdfx
 npm run deploy
 npm run generate
